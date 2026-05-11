@@ -62,3 +62,6 @@ mongoose.connect(process.env.MONGODB_URI)
 app.listen(PORT, () => {
   console.log(`🚀 服务器运行在 http://localhost:${PORT}`);
 });
+
+const serverless = require('@tencent-serverless/scf-express');
+module.exports = serverless(app);
