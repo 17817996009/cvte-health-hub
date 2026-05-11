@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  # MongoDB数据库 - 存储用户和健康数据
+  mongodb:
+    image: mongo:6.0.14
+    container_name: cvte-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: cvte_health_hub
+
+  # EMQX MQTT broker - 物联网消息通信
+  emqx:
+    image: emqx/emqx:5.3.2
+    container_name: cvte-emqx
+    restart: always
+    ports:
+      - "1883:1883"   # MQTT TCP端口
+      - "8083:8083"   # MQTT WebSocket端口
+      - "18083:18083" # EMQX管理控制台
+    environment:
+      EMQX_NAME: cvte-emqx
+
+  # Neo4j图数据库 - 医疗知识图谱
+  neo4j:
+    image: neo4j:5.16.0
+    container_name: cvte-neo4j
+    restart: always
+    ports:
+      - "7474:7474"   # Neo4j浏览器界面
+      - "7687:7687"   # Bolt协议端口
+    volumes:
+      - neo4j_data:/data
+    environment:
+      NEO4J_AUTH: neo4j/password123  # 用户名: neo4j, 密码: password123
+      NEO4J_dbms_memory_pagecache_size: 512M
+      NEO4J_dbms_memory_heap_initial__size: 512M
+      NEO4J_dbms_memory_heap_max__size: 1G
+
+  # Node-RED IoT平台 - 设备联动和流程编排
+  node-red:
+    image: nodered/node-red:3.1.3
+    container_name: cvte-node-red
+    restart: always
+    ports:
+      - "1880:1880"
+    volumes:
+      - node_red_data:/data
+    depends_on:
+      - emqx
+
+volumes:
+  mongodb_data:
+  neo4j_data:
+  node_red_data:

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI健康顾问 - 家庭健康中枢</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{background:#f5f7fa;font-family:"微软雅黑",sans-serif;padding:20px;}
+        .container{max-width:800px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 2px 15px #eee;overflow:hidden;}
+        .chat-top{background:#2d8cf0;color:#fff;padding:18px;text-align:center;font-size:18px;font-weight:bold;}
+        .chat-box{height:500px;padding:20px;overflow-y:auto;}
+        .msg{margin-bottom:15px;}
+        .ai-msg{text-align:left;}
+        .user-msg{text-align:right;}
+        .msg-content{display:inline-block;padding:10px 15px;border-radius:10px;max-width:70%;line-height:1.6;}
+        .ai-msg .msg-content{background:#f0f2f5;}
+        .user-msg .msg-content{background:#2d8cf0;color:#fff;}
+        .input-box{display:flex;padding:15px;border-top:1px solid #eee;}
+        #question{flex:1;padding:12px 15px;border:1px solid #ddd;border-radius:20px;outline:none;font-size:14px;}
+        #send{margin-left:10px;padding:12px 25px;background:#2d8cf0;color:#fff;border:none;border-radius:20px;cursor:pointer;}
+        .quick{padding:10px 20px;display:flex;gap:10px;flex-wrap:wrap;}
+        .quick button{border:1px solid #2d8cf0;background:#fff;color:#2d8cf0;padding:6px 12px;border-radius:15px;cursor:pointer;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chat-top">🤖 AI 健康顾问</div>
+        <div class="quick">
+            <button onclick="setQ('心率多少算正常？')">心率正常范围</button>
+            <button onclick="setQ('熬夜对身体有什么危害？')">熬夜危害</button>
+            <button onclick="setQ('日常如何养生？')">养生建议</button>
+        </div>
+        <div class="chat-box" id="chatBox">
+            <div class="msg ai-msg">
+                <div class="msg-content">你好！我是AI健康顾问，可以问我任何健康相关问题～</div>
+            </div>
+        </div>
+        <div class="input-box">
+            <input type="text" id="question" placeholder="输入你的健康问题...">
+            <button id="send" onclick="sendMsg()">发送</button>
+        </div>
+    </div>
+
+    <script>
+        function setQ(text){
+            document.getElementById('question').value = text;
+        }
+
+        async function sendMsg(){
+            let q = document.getElementById('question').value.trim();
+            if(!q) return;
+            // 追加用户消息
+            let chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML += `<div class="msg user-msg"><div class="msg-content">${q}</div></div>`;
+            document.getElementById('question').value = '';
+
+            // 请求后端接口
+            let res = await fetch('/api/ai/chat', {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({question:q})
+            });
+            let data = await res.json();
+
+            // 追加AI回复
+            chatBox.innerHTML += `<div class="msg ai-msg"><div class="msg-content">${data.answer}</div></div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // 回车发送
+        document.getElementById('question').addEventListener('keydown',e=>{
+            if(e.key==='Enter') sendMsg();
+        });
+    </script>
+</body>
+</html>
