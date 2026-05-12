@@ -1,14 +1,7 @@
 [build]
-  # 构建前端并安装函数依赖（函数目录的依赖会自动安装，但这里可以加额外命令）
-  command = "cd frontend && npm install && npm run build"
-  # Vite 默认输出目录是 dist
+  command = "npm install && cd frontend && npm install && npm run build"
   publish = "frontend/dist"
 
-# 指定函数目录
-[functions]
-  directory = "netlify/functions"
-
-# 将所有 /api/* 请求转发给我们的函数
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/api"
