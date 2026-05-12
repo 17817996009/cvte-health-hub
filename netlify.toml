@@ -1,7 +1,9 @@
 [build]
+  # 先安装根目录依赖（包含 serverless-http 和 express），再构建前端
   command = "npm install && cd frontend && npm install && npm run build"
   publish = "frontend/dist"
 
+# 所有 /api/* 请求转发到 Netlify Functions
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/api"
