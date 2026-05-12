@@ -2,7 +2,7 @@ exports.handler = async (event) => {
   const path = event.path.replace('/.netlify/functions/api-router', '');
   const method = event.httpMethod;
 
-  // --------------------- 注册 ---------------------
+  // 处理注册接口（前端调用的是/api/users/register）
   if (method === 'POST' && path === '/api/users/register') {
     return {
       statusCode: 200,
@@ -18,7 +18,7 @@ exports.handler = async (event) => {
     };
   }
 
-  // --------------------- 登录 ---------------------
+  // 处理登录接口（前端调用的是/api/users/login）
   if (method === 'POST' && path === '/api/users/login') {
     return {
       statusCode: 200,
@@ -34,7 +34,7 @@ exports.handler = async (event) => {
     };
   }
 
-  // --------------------- AI 对话（混元） ---------------------
+  // 处理AI对话接口（和你之前的混元逻辑保持一致）
   if (method === 'POST' && path === '/api/chat') {
     try {
       const { messages, vitals } = JSON.parse(event.body);
@@ -71,7 +71,7 @@ exports.handler = async (event) => {
     }
   }
 
-  // --------------------- 设备列表 ---------------------
+  // 其他接口（如设备列表）
   if (method === 'GET' && path === '/api/devices') {
     return {
       statusCode: 200,
@@ -80,6 +80,6 @@ exports.handler = async (event) => {
     };
   }
 
-  // 未知请求
+  // 未知请求返回404
   return { statusCode: 404, body: 'Not Found' };
 };

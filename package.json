@@ -1,0 +1,25 @@
+{
+  "name": "cvte-health-hub",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/17817996009/cvte-health-hub.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/17817996009/cvte-health-hub/issues"
+  },
+  "homepage": "https://github.com/17817996009/cvte-health-hub#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "serverless-http": "^4.0.0"
+  }
+}
