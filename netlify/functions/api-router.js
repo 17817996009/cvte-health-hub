@@ -2,17 +2,32 @@ exports.handler = async (event) => {
   const path = event.path.replace('/.netlify/functions/api-router', '');
   const method = event.httpMethod;
 
-  // --------------------- 注册 / 登录（模拟） ---------------------
-  if (method === 'POST' && (path === '/api/auth/register' || path === '/api/auth/login')) {
-    // 直接返回一个模拟的用户信息和 token，前端拿到后就能跳转
+  // --------------------- 注册 ---------------------
+  if (method === 'POST' && path === '/api/users/register') {
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         user: {
           id: 'demo-user-001',
-          email: 'test@cvte.com',
-          name: 'CVTE 体验用户'
+          name: '张先生',
+          email: 'test@cvte.com'
+        },
+        token: 'fake-jwt-token-for-demo'
+      })
+    };
+  }
+
+  // --------------------- 登录 ---------------------
+  if (method === 'POST' && path === '/api/users/login') {
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        user: {
+          id: 'demo-user-001',
+          name: '张先生',
+          email: 'test@cvte.com'
         },
         token: 'fake-jwt-token-for-demo'
       })
@@ -23,7 +38,6 @@ exports.handler = async (event) => {
   if (method === 'POST' && path === '/api/chat') {
     try {
       const { messages, vitals } = JSON.parse(event.body);
-
       const apiUrl = process.env.TOKENHUB_API_URL || "https://hy3-preview.tokhub.com/v1/chat/completions";
       const systemPrompt = `你是家庭健康助手。当前体征：心率${vitals.heartRate}bpm，血氧${vitals.spo2}%，睡眠${vitals.sleepScore}/100，精神状态“${vitals.mood}”。请用通俗语言给予建议，150字内。`;
 
