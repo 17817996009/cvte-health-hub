@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 3001;
 
 // 跨域中间件
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: process.env.CORS_ORIGIN || 'http://localhost:5173', // 建议改为环境变量，部署时设置
   credentials: true
 }));
 
@@ -58,10 +58,13 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ MongoDB连接成功'))
   .catch(err => console.error('❌ MongoDB连接失败:', err));
 
-// 启动服务器
-app.listen(PORT, () => {
-  console.log(`🚀 服务器运行在 http://localhost:${PORT}`);
-});
+// 启动服务器：只在非生产环境（Netlify函数环境会自动设置NODE_ENV=production）
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🚀 本地开发服务器运行在 http://localhost:${PORT}`);
+  });
+} else {
+  console.log('✅ Express应用已加载（Netlify函数模式）');
+}
 
-const serverless = require('@tencent-serverless/scf-express');
-module.exports = serverless(app);
+module.exports = app;

@@ -64,7 +64,7 @@ const SmartMirror = () => {
     const fetchHealthData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3001/api/health/latest', {
+        const response = await axios.get('/api/health/latest', {
           headers: { Authorization: `Bearer ${token}` }
         });
         
@@ -72,7 +72,7 @@ const SmartMirror = () => {
           setHealthData(response.data.data.data);
           
           // 分析健康数据
-          const analyzeResponse = await axios.post('http://localhost:3001/api/health/analyze', 
+          const analyzeResponse = await axios.post('/api/health/analyze', 
             { healthData: response.data.data.data },
             { headers: { Authorization: `Bearer ${token}` } }
           );
@@ -109,7 +109,7 @@ const SmartMirror = () => {
     
     try {
       // 调用后端AI接口
-      const response = await axios.post('http://localhost:3001/api/ai/chat', {
+      const response = await axios.post('/api/ai/chat', {
         question: chatInput
       });
       

@@ -58,7 +58,7 @@ const MaxhubDashboard = () => {
     const fetchHistoryData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3001/api/health/history?days=7', {
+        const response = await axios.get('/api/health/history?days=7', {
           headers: { Authorization: `Bearer ${token}` }
         });
         
@@ -78,7 +78,7 @@ const MaxhubDashboard = () => {
     const fetchSchedules = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:3001/api/schedules', {
+        const response = await axios.get('/api/schedules', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setSchedules(response.data.data);
@@ -113,7 +113,7 @@ const MaxhubDashboard = () => {
   const saveUserInfo = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.put('http://localhost:3001/api/users/update-profile', editUserInfo, {
+      const response = await axios.put('/api/users/update-profile', editUserInfo, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -176,7 +176,7 @@ const MaxhubDashboard = () => {
       const token = localStorage.getItem('token');
       const healthConditions = newMember.healthConditions.split(/[,，]/).map(s => s.trim()).filter(s => s);
 
-      const response = await axios.put('http://localhost:3001/api/users/update', {
+      const response = await axios.put('/api/users/update', {
         familyMember: {
           name: newMember.name,
           relationship: newMember.relationship,
@@ -202,7 +202,7 @@ const MaxhubDashboard = () => {
   const handleDeleteMember = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.delete(`http://localhost:3001/api/users/delete-family-member/${deleteConfirm.index}`, {
+      const response = await axios.delete(`/api/users/delete-family-member/${deleteConfirm.index}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -220,7 +220,7 @@ const MaxhubDashboard = () => {
   const handleAddSchedule = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:3001/api/schedules', newSchedule, {
+      const response = await axios.post('/api/schedules', newSchedule, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -236,7 +236,7 @@ const MaxhubDashboard = () => {
   const handleDeleteSchedule = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:3001/api/schedules/${id}`, {
+      await axios.delete(`/api/schedules/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -250,7 +250,7 @@ const MaxhubDashboard = () => {
   const toggleScheduleComplete = async (id, completed) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:3001/api/schedules/${id}`, { completed: !completed }, {
+      await axios.put(`/api/schedules/${id}`, { completed: !completed }, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -788,7 +788,7 @@ const MaxhubDashboard = () => {
               <h2 className="text-2xl font-bold">AI健康顾问</h2>
               <div className="bg-white rounded-xl shadow-sm p-6 h-[70vh]">
                 <iframe 
-                  src="http://localhost:3001/ai-chat.html" 
+                  src="/ai-chat.html" 
                   width="100%" 
                   height="100%" 
                   frameBorder="0"

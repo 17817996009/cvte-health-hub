@@ -153,7 +153,7 @@ const MobileApp = () => {
     
     try {
       // 调用后端AI接口（和PC端同一个接口）
-      const response = await axios.post('http://localhost:3001/api/ai/chat', {
+      const response = await axios.post('/api/ai/chat', {
         question: chatInput
       });
       
